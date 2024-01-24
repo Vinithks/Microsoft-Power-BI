@@ -1,0 +1,82 @@
+Line Chart with Forecast Trend
+python
+Copy code
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Sample data loading - replace this with your actual dataset
+data = pd.read_csv('your_dataset.csv')  # Ensure your dataset is in CSV format
+
+# Convert PACKAGEDATE to datetime and sort
+data['PACKAGEDATE'] = pd.to_datetime(data['PACKAGEDATE'])
+data.sort_values('PACKAGEDATE', inplace=True)
+
+# Count of PACKAGENAME per PACKAGEDATE for line chart
+data_count = data.groupby('PACKAGEDATE')['PACKAGENAME'].count()
+
+# Plotting
+plt.figure(figsize=(10, 6))
+plt.plot(data_count.index, data_count.values, marker='o')
+plt.title('Package Selections Over Time')
+plt.xlabel('Date')
+plt.ylabel('Number of Package Selections')
+plt.grid(True)
+plt.show()
+
+Column Chart with Predicted Values
+python
+Copy code
+# Assuming you have predictions for the next two months
+# Add these predictions to your dataset manually
+
+# Plotting
+plt.figure(figsize=(10, 6))
+plt.bar(data_count.index, data_count.values, color='blue', label='Actual')
+plt.bar(predicted_dates, predicted_values, color='red', label='Predicted')
+plt.title('Actual vs Predicted Package Selections')
+plt.xlabel('Date')
+plt.ylabel('Number of Package Selections')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+
+Confidence Interval Plot
+For confidence intervals, you typically need statistical methods to calculate these intervals. This example assumes you have these intervals calculated:
+
+python
+Copy code
+# Assuming you have confidence interval data
+lower_bound = ...
+upper_bound = ...
+
+# Plotting
+plt.figure(figsize=(10, 6))
+plt.fill_between(data_count.index, lower_bound, upper_bound, color='gray', alpha=0.3)
+plt.plot(data_count.index, data_count.values, marker='o')
+plt.title('Confidence Interval of Package Selections')
+plt.xlabel('Date')
+plt.ylabel('Number of Package Selections')
+plt.grid(True)
+plt.show()
+
+
+Combination Chart
+python
+Copy code
+# Plotting
+fig, ax1 = plt.subplots(figsize=(10, 6))
+
+# Bar chart for historical data
+ax1.bar(data_count.index, data_count.values, color='blue', label='Historical')
+
+# Line chart for predictions
+ax1.plot(predicted_dates, predicted_values, color='red', label='Predicted', marker='o')
+
+ax1.set_xlabel('Date')
+ax1.set_ylabel('Number of Package Selections')
+ax1.title.set_text('Historical and Predicted Package Selections')
+ax1.legend()
+plt.grid(True)
+plt.show()
